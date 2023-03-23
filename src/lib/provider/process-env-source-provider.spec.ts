@@ -1,6 +1,6 @@
 import { ProcessEnvSourceProvider } from './process-env-source-provider';
 
-describe('process env provider의 동작을 검증합니다', () => {
+describe('ProcessEnvSourceProvider', () => {
     let orgEnv: NodeJS.ProcessEnv;
 
     beforeAll(() => {
@@ -12,7 +12,7 @@ describe('process env provider의 동작을 검증합니다', () => {
         process.env = orgEnv;
     });
 
-    it('process.env 로 설정된 환경변수를 불러올 수 있습니다.', () => {
+    it('should configure configService from process.env', () => {
         expect(new ProcessEnvSourceProvider().export()).toEqual({ TEST: 'value' });
     });
 });

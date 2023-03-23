@@ -8,8 +8,6 @@ import { AbstractConfigSourceProvider } from '../abstract/abstract-config-source
 
 export class DotenvSourceProvider implements AbstractConfigSourceProvider {
     constructor(private readonly options?: dotenv.DotenvConfigOptions) {}
-
-    // @ts-expect-error TODO: modify AbstractConfigSourceProvider.export method's signature to cover throw case
     export() {
         if (this.options?.path && !this.existsFile(this.options.path)) {
             throw new Error(`Not Found File ${this.options.path}`);
