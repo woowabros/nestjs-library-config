@@ -1,3 +1,3 @@
 export abstract class AbstractConfigSourceProvider {
-    abstract export(): Record<string, unknown>;
+    abstract export(): Record<string, unknown> | unknown;
 }

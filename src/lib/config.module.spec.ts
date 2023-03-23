@@ -31,9 +31,7 @@ describe('ConfigModule', () => {
         } catch (error) {
             expect(error).toBeInstanceOf(ValidationError);
         } finally {
-            if (app) {
-                await app.close();
-            }
+            await app?.close();
         }
     });
 });
