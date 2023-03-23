@@ -1,0 +1,39 @@
+import { INestApplication, Injectable } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { Expose, Transform, Type } from 'class-transformer';
+import { IsNumber, ValidationError } from 'class-validator';
+
+import { AbstractConfigService } from './abstract/abstract-config.service';
+import { ConfigModule } from './config.module';
+
+describe('ConfigModule', () => {
+    let app: INestApplication;
+
+    @Injectable()
+    class ConfigService extends AbstractConfigService<ConfigService> {
+        @Expose({ name: 'PORT' })
+        @Transform(({ value }) => value ?? 3000)
+        @Type(() => Number)
+        @IsNumber()
+        port: number;
+    }
+
+    it('should throw when value is invalid', async () => {
+        process.env.PORT = 'invalid';
+
+        try {
+            const moduleFixture: TestingModule = await Test.createTestingModule({
+                imports: [ConfigModule.forFeature(ConfigService)],
+            }).compile();
+            app = moduleFixture.createNestApplication();
+
+            await app.init();
+        } catch (error) {
+            expect(error).toBeInstanceOf(ValidationError);
+        } finally {
+            if (app) {
+                await app.close();
+            }
+        }
+    });
+});
