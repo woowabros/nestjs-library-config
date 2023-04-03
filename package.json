@@ -4,6 +4,9 @@
     "description": "A NestJS module for managing environment variables easily and securely.",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org"
