@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const OptionalBoolean = (value: any) => {
+export function OptionalBoolean(value: any) {
     switch (value?.toString().toUpperCase()) {
         case 'TRUE':
             return true;
@@ -8,4 +8,4 @@ export const OptionalBoolean = (value: any) => {
         default:
             return value;
     }
-};
+}
