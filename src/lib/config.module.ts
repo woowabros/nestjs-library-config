@@ -6,14 +6,22 @@ import { AbstractConfigSourceProvider } from './abstract/abstract-config-source-
 import { AbstractConfigService } from './abstract/abstract-config.service';
 import { ProcessEnvSourceProvider } from './provider/process-env-source-provider';
 
+export interface ConfigModuleOptions {
+    sourceProvider?: AbstractConfigSourceProvider;
+    logging?: boolean;
+}
+
 export class ConfigModule {
     static forFeature(
         configClass: Type<AbstractConfigService> | Array<Type<AbstractConfigService>>,
-        sourceProvider: AbstractConfigSourceProvider = new ProcessEnvSourceProvider(),
+        options?: ConfigModuleOptions,
     ): DynamicModule {
+        const sourceProvider = options?.sourceProvider ?? new ProcessEnvSourceProvider();
+        const logging = options?.logging ?? true;
+
         const providers: Array<FactoryProvider<AbstractConfigService>> = Array.isArray(configClass)
-            ? configClass.map((config) => ConfigModule.createConfig(config, sourceProvider))
-            : [ConfigModule.createConfig(configClass, sourceProvider)];
+            ? configClass.map((config) => ConfigModule.createConfig(config, sourceProvider, logging))
+            : [ConfigModule.createConfig(configClass, sourceProvider, logging)];
 
         return {
             module: ConfigModule,
@@ -25,11 +33,14 @@ export class ConfigModule {
     private static createConfig(
         configClass: Type<AbstractConfigService>,
         sourceProvider: AbstractConfigSourceProvider,
+        logging: boolean,
     ): FactoryProvider<AbstractConfigService> {
         return {
             provide: configClass,
             useFactory: () => {
-                Logger.log(`[ConfigModule] Read Environment from ${configClass.name}`);
+                if (logging) {
+                    Logger.log(`[ConfigModule] Read Environment from ${configClass.name}`);
+                }
                 const obj = plainToInstance(configClass, sourceProvider.export(), { excludeExtraneousValues: true });
                 const [error] = validateSync(obj, { stopAtFirstError: true });
                 if (error) {
@@ -40,7 +51,9 @@ export class ConfigModule {
                 }
 
                 for (const [key, value] of Object.entries(obj)) {
-                    Logger.log(`[${configClass.name}] ${key}: ${value}`);
+                    if (logging) {
+                        Logger.log(`[${configClass.name}] ${key}: ${value}`);
+                    }
                     Object.defineProperty(obj, key, {
                         get() {
                             return value;

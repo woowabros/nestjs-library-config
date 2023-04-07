@@ -35,7 +35,7 @@ const config: Config = {
             lines: 60,
         },
     },
-    coveragePathIgnorePatterns: ['<rootDir>/jest.config.ts', '<rootDir>/src/example/'],
+    coveragePathIgnorePatterns: ['<rootDir>/jest.config.ts', 'spec/', '<rootDir>/src/example/'],
 };
 
 export default config;
