@@ -2,13 +2,60 @@
 
 A NestJS module for managing environment variables easily and securely.
 
+<hr/>
+
+## What Difference From [official library](https://docs.nestjs.com/techniques/configuration)
+
+An `official library` ( [@nestjs/config](https://docs.nestjs.com/techniques/configuration) ) exists for managing environments in nestjs.
+
+However, we hoped that environment to be managed on a per `module basis`.
+
+We thought it would be nice to have some `simpler` and `easier` to `verify` and `type infer`.
+
+It was created by this background, and only `environment used per module` can be used.
+
+Instead of looking for and using varA, varB, varC... in configService, It can define own environment per module and use it.
+
+```ts
+# nestjs/config
+@Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => {
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        database: configService.get('DB_DATABASE'),
+        password: configService.get('DB_PASSWORD'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: false,
+      },
+      inject: [ConfigService],
+    }),
+  ],
+})
+
+# nestjs-library/config
+@Module({
+    imports: [
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule.forFeature(TypeORMConfigService)],
+            useFactory: (typeORMConfigService: TypeORMConfigService) => typeORMConfigService,
+            inject: [TypeORMConfigService],
+        }),
+    ],
+})
+```
+
 ## Features
 
-- Decentralizes environment variables by managing each as a provider
-- Protects changing values of environment variable by developer's mistake
-- Supports strong validation
-- Supports type inference
-- Supports modifying environment variables at runtime via remote config(such as Apache ZooKeeper etc).
+-   Decentralizes environment variables by managing each as a provider
+-   Protects changing values of environment variable by developer's mistake
+-   Supports strong validation
+-   Supports type inference
+-   Supports modifying environment variables at runtime via remote config(such as Apache ZooKeeper etc)
 
 ## Installation
 
@@ -29,7 +76,7 @@ pnpm add @nestjs-library/config
 
 In `@nestjs-library/config`, each environment variable is managed by a provider. So, you should create a config service first.
 
-We use `class-transformer` internally for transforming environment variables to Config Class. You can use decorators such as  `@Expose` and `@Type` as your need.
+We use `class-transformer` internally for transforming environment variables to Config Class. You can use decorators such as `@Expose` and `@Type` as your need.
 
 ```ts
 // database-config.service.ts
@@ -84,7 +131,6 @@ export class DatabaseConfigService extends AbstractConfigService<DatabaseConfigS
 }
 ```
 
-
 ### Step 3. Import Config module into your module
 
 ```ts
@@ -98,7 +144,7 @@ import { TestService } from './test.service';
 @Module({
     imports: [ConfigModule.forFeature(DatabaseConfigService)],
     providers: [TestService],
-    exports: [TestService,]
+    exports: [TestService],
 })
 export class TestModule {}
 ```
@@ -120,9 +166,9 @@ export class TestService {
 }
 ```
 
-## Contributing
+## [Contributors](https://github.com/type-challenges/type-challenges/graphs/contributors)
 
-(To be added)
+![Contributors](https://contrib.rocks/image?repo=woowabros/nestjs-library-config)
 
 ## License
 
