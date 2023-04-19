@@ -4,20 +4,16 @@ A NestJS module for managing environment variables easily and securely.
 
 <hr/>
 
-## What Difference From [official library](https://docs.nestjs.com/techniques/configuration)
+### What Difference From [official library](https://docs.nestjs.com/techniques/configuration)
 
-An `official library` ( [@nestjs/config](https://docs.nestjs.com/techniques/configuration) ) exists for managing environments in nestjs.
+There is an `official library` ([@nestjs/config](https://docs.nestjs.com/techniques/configuration) ) for managing configurations for nestjs application
 
-However, we hoped that environment to be managed on a per `module basis`.
+However, we hoped that configurations to be managed by each module. We thought it would be nice to have `simpler` and `easier way to validate` configurations and `infer type` of them.
 
-We thought it would be nice to have some `simpler` and `easier` to `verify` and `type infer`.
-
-It was created by this background, and only `environment used per module` can be used.
-
-Instead of looking for and using varA, varB, varC... in configService, It can define own environment per module and use it.
+Here is where `@nestjs-library/config` kicks in. Instead of looking for configuration from global, you can define own configurations `per module` and use it as you wish.
 
 ```ts
-# nestjs/config
+// nestjs/config
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -37,7 +33,7 @@ Instead of looking for and using varA, varB, varC... in configService, It can de
   ],
 })
 
-# nestjs-library/config
+// nestjs-library/config
 @Module({
     imports: [
         TypeOrmModule.forRootAsync({
