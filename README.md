@@ -2,7 +2,13 @@
 
 A NestJS module for managing environment variables easily and securely.
 
-<hr/>
+## Features
+
+-   Decentralizes environment variables by managing each as a provider
+-   Protects changing values of environment variable by developer's mistake
+-   Supports strong validation
+-   Supports type inference
+-   Supports modifying environment variables at runtime via remote config(such as Apache ZooKeeper etc)
 
 ### What Difference From [official library](https://docs.nestjs.com/techniques/configuration)
 
@@ -44,14 +50,6 @@ Here is where `@nestjs-library/config` kicks in. Instead of looking for configur
     ],
 })
 ```
-
-## Features
-
--   Decentralizes environment variables by managing each as a provider
--   Protects changing values of environment variable by developer's mistake
--   Supports strong validation
--   Supports type inference
--   Supports modifying environment variables at runtime via remote config(such as Apache ZooKeeper etc)
 
 ## Installation
 
