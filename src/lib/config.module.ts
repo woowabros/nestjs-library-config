@@ -9,6 +9,7 @@ import { ProcessEnvSourceProvider } from './provider/process-env-source-provider
 export interface ConfigModuleOptions {
     sourceProvider?: AbstractConfigSourceProvider;
     logging?: boolean;
+    global?: boolean;
 }
 
 export class ConfigModule {
@@ -27,6 +28,7 @@ export class ConfigModule {
             module: ConfigModule,
             providers,
             exports: providers,
+            global: options?.global ?? false,
         };
     }
 
