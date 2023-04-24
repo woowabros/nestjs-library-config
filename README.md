@@ -166,7 +166,7 @@ export class TestService {
 }
 ```
 
-## [Contributors](https://github.com/type-challenges/type-challenges/graphs/contributors)
+## [Contributors](https://github.com/woowabros/nestjs-library-config/graphs/contributors)
 
 ![Contributors](https://contrib.rocks/image?repo=woowabros/nestjs-library-config)
 
