@@ -57,6 +57,47 @@ Instead of looking for and using varA, varB, varC... in configService, It can de
 -   Supports type inference
 -   Supports modifying environment variables at runtime via remote config(such as Apache ZooKeeper etc)
 
+### What Difference From [official library](https://docs.nestjs.com/techniques/configuration)
+
+There is an `official library` ([@nestjs/config](https://docs.nestjs.com/techniques/configuration) ) for managing configurations for nestjs application
+
+However, we hoped that configurations to be managed by each module. We thought it would be nice to have `simpler` and `easier way to validate` configurations and `infer type` of them.
+
+Here is where `@nestjs-library/config` kicks in. Instead of looking for configuration from global, you can define own configurations `per module` and use it as you wish.
+
+```ts
+// nestjs/config
+@Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => {
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        database: configService.get('DB_DATABASE'),
+        password: configService.get('DB_PASSWORD'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: false,
+      },
+      inject: [ConfigService],
+    }),
+  ],
+})
+
+// nestjs-library/config
+@Module({
+    imports: [
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule.forFeature(TypeORMConfigService)],
+            useFactory: (typeORMConfigService: TypeORMConfigService) => typeORMConfigService,
+            inject: [TypeORMConfigService],
+        }),
+    ],
+})
+```
+
 ## Installation
 
 ```bash
