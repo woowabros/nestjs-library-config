@@ -1,5 +1,21 @@
 # @nestjs-library/config
 
+<p align="center">
+    <img src="https://github.com/woowabros/nestjs-library-config/actions/workflows/ci.yml/badge.svg" alt="Node.js CI">
+    <a href='https://coveralls.io/github/woowabros/nestjs-library-config?branch=main'>
+        <img src='https://coveralls.io/repos/github/woowabros/nestjs-library-config/badge.svg?branch=main' alt='Coverage Status' />
+    </a>
+    <a href="https://www.npmjs.com/package/@nestjs-library/config">
+        <img src="https://img.shields.io/npm/v/@nestjs-library/config">
+    </a>
+    <a href="https://www.npmjs.com/package/@nestjs-library/config">
+        <img src="https://img.shields.io/bundlephobia/minzip/@nestjs-library/config">
+    </a>
+    <a href="https://www.npmjs.com/package/@nestjs-library/config">
+        <img src="https://img.shields.io/npm/dw/@nestjs-library/config">
+    </a>        
+</p>
+
 A NestJS module for managing environment variables easily and securely.
 
 ## Features
