@@ -813,7 +813,7 @@
     path-to-regexp "3.2.0"
     tslib "2.5.0"
 
-"@nestjs/platform-express@^9.4.0":
+"@nestjs/platform-express@9.4.0":
   version "9.4.0"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-9.4.0.tgz#e1f9e6c60cdd8d7889abbc6a04ab95279976175b"
   integrity sha512-PpnfghpNq7mwG43z3+pacHulsabUCBMla4nUikntXT525ORpZSDvh/nLi1HLfE4w5+FcINc8/RBOyYTeRVmiRQ==
