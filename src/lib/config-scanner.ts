@@ -301,9 +301,9 @@ export class ConfigScanner {
                     const body = (argumentNode as ts.ArrowFunction).body;
 
                     // case 1.
-                    if ((argumentNode as ts.ArrowFunction).body.kind === ts.SyntaxKind.BinaryExpression) {
-                        const binExpr = (argumentNode as ts.ArrowFunction).body as ts.BinaryExpression;
-                        defaultValue = binExpr.right.getText().replace(/'(.*)'$/, '$1');
+                    if (body.kind === ts.SyntaxKind.BinaryExpression) {
+                        const text = ((argumentNode as ts.ArrowFunction).body as ts.BinaryExpression).right.getText();
+                        defaultValue = text.includes('\n') ? this.convertValue<string>(text).toString() : text.replace(/'(.*)'$/, '$1');
                     } else if (body.kind !== ts.SyntaxKind.CallExpression) {
                         env.defaultValue = defaultValue;
                         break;
