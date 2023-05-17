@@ -75,6 +75,12 @@ describe('ConfigScanner', () => {
                 groups: [ExampleConfigService.name],
                 conditions: ['IsString', 'IsOptional', 'IsEnum'],
             },
+            LONG_ARRAY_DEFAULT: {
+                conditions: ['IsString', 'IsOptional', 'IsEnum'],
+                defaultValue:
+                    'aaaaaaa,bbbbbbb,ccccccc,ddddddd,eeeeeee,fffffff,ggggggg,aaaaaaa,bbbbbbb,ccccccc,ddddddd,eeeeeee,fffffff,ggggggg,aaaaaaa,bbbbbbb,ccccccc,ddddddd,eeeeeee,fffffff,ggggggg',
+                groups: [ExampleConfigService.name],
+            },
         };
 
         expect(JSON.parse(jsonFile.toString())).toEqual(expected);

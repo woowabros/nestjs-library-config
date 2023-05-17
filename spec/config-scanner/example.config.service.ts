@@ -31,4 +31,36 @@ export class ExampleConfigService extends AbstractConfigService<ExampleConfigSer
     @IsOptional()
     @IsEnum(LOG_LEVELS, { each: true })
     logLevels: LogLevel[];
+
+    @Expose({ name: 'LONG_ARRAY_DEFAULT' })
+    @Transform(
+        ({ value }) =>
+            value ?? [
+                'aaaaaaa',
+                'bbbbbbb',
+                'ccccccc',
+                'ddddddd',
+                'eeeeeee',
+                'fffffff',
+                'ggggggg',
+                'aaaaaaa',
+                'bbbbbbb',
+                'ccccccc',
+                'ddddddd',
+                'eeeeeee',
+                'fffffff',
+                'ggggggg',
+                'aaaaaaa',
+                'bbbbbbb',
+                'ccccccc',
+                'ddddddd',
+                'eeeeeee',
+                'fffffff',
+                'ggggggg',
+            ],
+    )
+    @IsString({ each: true })
+    @IsOptional()
+    @IsEnum(LOG_LEVELS, { each: true })
+    labels: string[];
 }
