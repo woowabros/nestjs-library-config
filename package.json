@@ -41,7 +41,7 @@
         "lodash": "4.17.21",
         "reflect-metadata": "0.1.13",
         "rxjs": "7.8.1",
-        "tslib": "2.5.0",
+        "tslib": "2.5.1",
         "typescript": "~5.0.4"
     },
     "devDependencies": {
