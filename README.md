@@ -34,8 +34,10 @@ However, we hoped that configurations to be managed by each module. We thought i
 
 Here is where `@nestjs-library/config` kicks in. Instead of looking for configuration from global, you can define own configurations `per module` and use it as you wish.
 
+> nestjs/config
+
 ```ts
-// nestjs/config
+// in module
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -55,7 +57,14 @@ Here is where `@nestjs-library/config` kicks in. Instead of looking for configur
   ],
 })
 
-// nestjs-library/config
+// in service
+const foo = this.configService.get<string>('app.foo', { infer: true })
+```
+
+> nestjs-library/config
+
+```ts
+// in module
 @Module({
     imports: [
         TypeOrmModule.forRootAsync({
@@ -65,6 +74,9 @@ Here is where `@nestjs-library/config` kicks in. Instead of looking for configur
         }),
     ],
 })
+
+// in service
+const foo = this.testConfigService.foo;
 ```
 
 ## Installation
