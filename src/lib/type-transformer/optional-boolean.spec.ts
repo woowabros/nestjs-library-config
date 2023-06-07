@@ -12,7 +12,7 @@ describe('OptionalBoolean', () => {
     });
 
     it('Should be returns same value if the strings are not `TRUE` and `FALSE`', () => {
-        for (const value of ['FAIL', 'tru', true, false, 1, 2, undefined]) {
+        for (const value of ['FAIL', 'tru', true, false, 1, 2, undefined, 'null', 'undefined', '']) {
             expect(OptionalBoolean(value)).toEqual(value);
         }
     });
