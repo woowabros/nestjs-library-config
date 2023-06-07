@@ -11,7 +11,7 @@ describe('OptionalBoolean', () => {
         expect(OptionalBoolean('false')).not.toBeTruthy();
     });
 
-    it('Should be returns same value if the strings are not `TRUE` and `FALSE`', () => {
+    it('Should return the same value if the result of `uppercase()` is neither `TRUE` nor `FALSE`', () => {
         for (const value of ['FAIL', 'tru', true, false, 1, 2, undefined, 'null', 'undefined', '']) {
             expect(OptionalBoolean(value)).toEqual(value);
         }
