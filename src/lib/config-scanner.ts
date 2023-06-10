@@ -370,7 +370,11 @@ export class ConfigScanner {
     }
 
     private convertValue<T>(value: string): T {
-        return new Function(`return ${value}`)();
+        try {
+            return new Function(`return ${value}`)();
+        } catch {
+            return value as unknown as T;
+        }
     }
 }
 
