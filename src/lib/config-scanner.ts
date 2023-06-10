@@ -121,7 +121,7 @@ export class ConfigScanner {
             ['', ...new Array(MARKDOWN_FORMAT.headers.length).fill(MARKDOWN_FORMAT.rowDash), ''].join(MARKDOWN_FORMAT.columns).trim();
 
         const tableBody = [];
-        for (const [key, value] of this.environmentMap.entries()) {
+        for (const [key, value] of new Map([...this.environmentMap].sort()).entries()) {
             tableBody.push(
                 [
                     '',

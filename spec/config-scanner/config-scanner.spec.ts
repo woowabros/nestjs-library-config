@@ -1,6 +1,8 @@
 import { readFileSync, existsSync, unlinkSync } from 'fs';
 import path from 'path';
 
+import { Example0ConfigService } from './example-0.config.service';
+import { Example9ConfigService } from './example-9.config.service';
 import { ExampleConfigService } from './example.config.service';
 import { ConfigScanner } from '../../src/lib/config-scanner';
 
@@ -37,7 +39,13 @@ describe('ConfigScanner', () => {
         expect(readme).not.toBeNull();
         expect(readme.includes('### Environments')).toEqual(true);
         expect(readme.includes('| name | groups | defaultValue | conditions |')).toEqual(true);
-        expect(readme.includes(`| EXAMPLE_TIMEOUT | ${ExampleConfigService.name} | 35_000 | IsNumber, IsOptional |`)).toEqual(true);
+        expect(
+            readme.includes(
+                `| EXAMPLE_TIMEOUT | ${[Example0ConfigService.name, Example9ConfigService.name, ExampleConfigService.name].join(
+                    ', ',
+                )} | 35_000 | IsNumber, IsOptional |`,
+            ),
+        ).toEqual(true);
         expect(readme.includes(`| EXAMPLE_WHITELIST | ${ExampleConfigService.name} | /health,/metrics | IsString, IsNotEmpty |`)).toEqual(
             true,
         );
@@ -55,9 +63,19 @@ describe('ConfigScanner', () => {
 
         const jsonFile = readFileSync(path.resolve(__dirname, jsonFilename));
         const expected = {
+            A10: {
+                conditions: ['IsNumber', 'IsOptional'],
+                defaultValue: '35_000',
+                groups: [Example9ConfigService.name],
+            },
+            ABCD: {
+                conditions: ['IsNumber', 'IsOptional'],
+                defaultValue: '35_000',
+                groups: [Example0ConfigService.name],
+            },
             EXAMPLE_TIMEOUT: {
                 defaultValue: '35_000',
-                groups: [ExampleConfigService.name],
+                groups: [Example0ConfigService.name, Example9ConfigService.name, ExampleConfigService.name],
                 conditions: ['IsNumber', 'IsOptional'],
             },
             EXAMPLE_WHITELIST: {
