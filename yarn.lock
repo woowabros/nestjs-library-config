@@ -792,14 +792,14 @@
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.0.1.tgz#625e93a0edb2c830e3c52ce2d67b9d53377c6a66"
   integrity sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==
 
-"@nestjs/common@9.4.2":
-  version "9.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-9.4.2.tgz#d1f8a685217e2d94f8950d00b618c542ffa2a5f1"
-  integrity sha512-sea+qZnbD5x3YWZDVQT/wbVJ2NiABaM1tyZTLuW9hpkcM2KFA96xKtK3VaCxyz49zoXIgSOefsyK7HuUMCe27Q==
+"@nestjs/common@9.4.3":
+  version "9.4.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-9.4.3.tgz#f907c5315b4273f7675864a05c4dda7056632b87"
+  integrity sha512-Gd6D4IaYj01o14Bwv81ukidn4w3bPHCblMUq+SmUmWLyosK+XQmInCS09SbDDZyL8jy86PngtBLTdhJ2bXSUig==
   dependencies:
     uid "2.0.2"
     iterare "1.2.1"
-    tslib "2.5.2"
+    tslib "2.5.3"
 
 "@nestjs/core@9.4.2":
   version "9.4.2"
