@@ -9,7 +9,7 @@ import { AbstractConfigSourceProvider } from '../abstract/abstract-config-source
 export class DotenvSourceProvider implements AbstractConfigSourceProvider {
     constructor(private readonly options?: dotenv.DotenvConfigOptions) {}
     export() {
-        if (this.options?.path && !this.existsFile(this.options.path)) {
+        if (this.options?.path && typeof this.options.path === 'string' && !this.existsFile(this.options.path)) {
             throw new Error(`Not Found File ${this.options.path}`);
         }
         return dotenv.config(this.options).parsed;
