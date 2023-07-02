@@ -1,7 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { AbstractConfigService } from '@nestjs-library/config'
-import { Expose, Transform, Type } from 'class-transformer'
-import { IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator'
+import { Injectable } from "@nestjs/common";
+import { AbstractConfigService } from "@nestjs-library/config";
+import { Expose, Transform, Type } from "class-transformer";
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateIf,
+} from "class-validator";
 
 @Injectable()
 export class AppConfigService extends AbstractConfigService {
@@ -9,11 +14,11 @@ export class AppConfigService extends AbstractConfigService {
   @Type(() => Number)
   @Transform(({ value }) => Number(value) ?? 3000)
   @IsNumber()
-  port: number
+  port: number;
 
   @Expose()
   @IsString()
   @ValidateIf((_, value) => value !== undefined)
   @IsOptional()
-  healthCheckPath: string
+  healthCheckPath: string;
 }
