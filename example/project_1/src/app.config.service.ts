@@ -5,13 +5,13 @@ import { IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator'
 
 @Injectable()
 export class AppConfigService extends AbstractConfigService {
-  @Expose()
+  @Expose({ name: 'PORT' })
   @Type(() => Number)
   @Transform(({ value }) => Number(value) ?? 3000)
   @IsNumber()
   port: number
 
-  @Expose()
+  @Expose({ name: 'HEALTH_CHECK_PATH' })
   @IsString()
   @ValidateIf((_, value) => value !== undefined)
   @IsOptional()
