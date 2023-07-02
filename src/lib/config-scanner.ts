@@ -117,28 +117,45 @@ export class ConfigScanner {
         return files.flat().filter((filename) => filename.endsWith(ConfigFile.SUFFIX));
     }
 
+    private formatUsingPrettier(content: string, fileType: FileType) {
+        let updatedContent = '';
+        const explorerSync = cosmiconfigSync('prettier');
+        const configResult = explorerSync.search();
+        if (configResult) {
+            const prettierConfig = configResult.config;
+            updatedContent = prettier.format(content, {
+                ...prettierConfig,
+                parser: fileType === FileType.MARKDOWN ? 'markdown' : fileType === FileType.JSON ? 'json' : undefined,
+            });
+            console.log('\u001B[32m', `[ConfigScanner] prettier refers "${configResult.filepath}"`);
+        }
+        return updatedContent;
+    }
+
     private writeJson() {
         const filePath = path.resolve(this.outputPath, this.filename);
         const content: Record<string, EnvironmentMapValue> = {};
         for (const [key, value] of this.environmentMap.entries()) {
             content[key] = value;
         }
-        const formatted = prettier.format(JSON.stringify(content, undefined, 4), { filepath: filePath });
-        writeFileSync(filePath, formatted);
+
+        let contentString = JSON.stringify(content, undefined, 4);
+        if (this.format) {
+            contentString = this.formatUsingPrettier(contentString, FileType.JSON);
+        }
+        writeFileSync(filePath, contentString);
 
         return filePath;
     }
 
     private writeReadme() {
         const filePath = path.resolve(this.outputPath, this.filename);
-        let originalContent = existsSync(filePath) ? readFileSync(filePath, 'utf-8') : '';
-        let updatedContent = '';
-
+        let readmeData = existsSync(filePath) ? readFileSync(filePath, 'utf-8') : '';
+        let filtered = '';
         const tableHeader =
             ['', ...MARKDOWN_FORMAT.headers, ''].join(MARKDOWN_FORMAT.columns).trim() +
             NEW_LINE +
             ['', ...new Array(MARKDOWN_FORMAT.headers.length).fill(MARKDOWN_FORMAT.rowDash), ''].join(MARKDOWN_FORMAT.columns).trim();
-
         const tableBody = [];
         for (const [key, value] of new Map([...this.environmentMap].sort()).entries()) {
             tableBody.push(
@@ -155,10 +172,10 @@ export class ConfigScanner {
             );
         }
 
-        if (originalContent.includes(MARKDOWN_FORMAT.title)) {
-            const lines = originalContent.split(NEW_LINE);
+        if (readmeData.includes(MARKDOWN_FORMAT.title)) {
+            const lines = readmeData.split(NEW_LINE);
             let isOverrideSection = false;
-            updatedContent = lines
+            filtered = lines
                 .reduce((filteredData: string[], line) => {
                     if (line.includes(MARKDOWN_FORMAT.title)) {
                         isOverrideSection = true;
@@ -181,22 +198,13 @@ export class ConfigScanner {
                 .join(NEW_LINE);
         }
 
-        const updated = [updatedContent, MARKDOWN_FORMAT.title, '', tableHeader, tableBody.join(NEW_LINE), ''].join(NEW_LINE);
+        let contentString = [filtered, MARKDOWN_FORMAT.title, '', tableHeader, tableBody.join(NEW_LINE), ''].join(NEW_LINE);
 
         if (this.format) {
-            const explorerSync = cosmiconfigSync('prettier');
-            const configResult = explorerSync.search();
-            if (configResult) {
-                const prettierConfig = configResult.config;
-                updatedContent = prettier.format(updatedContent, {
-                    ...prettierConfig,
-                    parser: 'markdown',
-                });
-                console.log(`[ConfigScanner] prettierConfig refers ${configResult.filepath}`);
-            }
+            contentString = this.formatUsingPrettier(contentString, FileType.MARKDOWN);
         }
 
-        writeFileSync(filePath, updated);
+        writeFileSync(filePath, contentString);
     }
 
     private async fillEnvironmentMap(fileNames: string[], options: ts.CompilerOptions) {
@@ -263,7 +271,7 @@ export class ConfigScanner {
         if (extendedClass !== ConfigFile.ABSTRACT_CLASS) {
             return;
         }
-        console.log('\u001B[32m', `serializing ${group}`);
+        console.log('\u001B[32m', `[ConfigScanner] serializing ${group}`);
 
         const result: Array<EnvironmentVariable & { group: string }> = [];
         for (const member of node.members) {
