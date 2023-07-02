@@ -2,8 +2,18 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { readdir } from 'fs/promises';
 import path from 'path';
 
+import { cosmiconfigSync } from 'cosmiconfig';
 import { isNil } from 'lodash';
+import prettier from 'prettier';
 import ts from 'typescript';
+
+interface EnvironmentVariable {
+    name: string;
+    defaultValue: unknown;
+    conditions: string[];
+}
+
+type EnvironmentMapValue = Omit<EnvironmentVariable, 'name'> & { groups: string[] };
 
 const NEW_LINE = '\n';
 const enum ConfigFile {
@@ -32,18 +42,24 @@ const MARKDOWN_FORMAT = {
 
 export interface ConfigScannerOptions {
     /**
-     * root directory of the project to scan configurations
+     * Root directory of the project to scan configurations
      */
     sourceRoot: string;
     /**
-     * directory to write the output file
+     * Directory to write the output file
      */
     outputDirectory?: string;
     /**
-     * filename of the output file
+     * Output filename
      * @example `README.md`, `env.json`
      */
     filename?: string;
+    /**
+     * Format the file with `prettier`.
+     * At this time, `prettier`'s config is found using `cosmiconfig`, so if you need further information about the priorities among the configuration files, you can refer to [`cosmiconfig`](https://www.npmjs.com/package/cosmiconfig). Currently, we only support Markdown and Json file.
+     * @default false
+     */
+    format?: boolean;
 }
 
 export class ConfigScanner {
@@ -54,23 +70,24 @@ export class ConfigScanner {
     private checker: ts.TypeChecker;
     private variableMap: Map<string, string>;
     private environmentMap: Map<string, EnvironmentMapValue>;
+    private format: boolean;
 
     constructor(configScannerOptions: ConfigScannerOptions) {
         this.sourceRoot = configScannerOptions.sourceRoot;
         this.outputPath = configScannerOptions.outputDirectory ?? path.parse(this.sourceRoot).dir;
-
         this.filename = configScannerOptions.filename ?? MARKDOWN_FORMAT.defaultFileName;
-        this.checkFileFormat(this.filename);
+        this.format = configScannerOptions.format ?? false;
 
+        this.checkFileFormat(this.filename);
         this.environmentMap = new Map();
     }
 
     private checkFileFormat(filename: string) {
-        if (filename?.endsWith('.md')) {
+        if (filename?.toLowerCase().endsWith('.md')) {
             this.fileType = FileType.MARKDOWN;
             return;
         }
-        if (filename?.endsWith('.json')) {
+        if (filename?.toLowerCase().endsWith('.json')) {
             this.fileType = FileType.JSON;
             return;
         }
@@ -106,14 +123,16 @@ export class ConfigScanner {
         for (const [key, value] of this.environmentMap.entries()) {
             content[key] = value;
         }
-        writeFileSync(filePath, JSON.stringify(content, undefined, 4));
+        const formatted = prettier.format(JSON.stringify(content, undefined, 4), { filepath: filePath });
+        writeFileSync(filePath, formatted);
 
         return filePath;
     }
 
     private writeReadme() {
         const filePath = path.resolve(this.outputPath, this.filename);
-        let readmeData = existsSync(filePath) ? readFileSync(filePath, 'utf-8') : '';
+        let originalContent = existsSync(filePath) ? readFileSync(filePath, 'utf-8') : '';
+        let updatedContent = '';
 
         const tableHeader =
             ['', ...MARKDOWN_FORMAT.headers, ''].join(MARKDOWN_FORMAT.columns).trim() +
@@ -136,10 +155,10 @@ export class ConfigScanner {
             );
         }
 
-        if (readmeData.includes(MARKDOWN_FORMAT.title)) {
-            const lines = readmeData.split(NEW_LINE);
+        if (originalContent.includes(MARKDOWN_FORMAT.title)) {
+            const lines = originalContent.split(NEW_LINE);
             let isOverrideSection = false;
-            readmeData = lines
+            updatedContent = lines
                 .reduce((filteredData: string[], line) => {
                     if (line.includes(MARKDOWN_FORMAT.title)) {
                         isOverrideSection = true;
@@ -162,7 +181,22 @@ export class ConfigScanner {
                 .join(NEW_LINE);
         }
 
-        writeFileSync(filePath, [readmeData, MARKDOWN_FORMAT.title, '', tableHeader, tableBody.join(NEW_LINE), ''].join(NEW_LINE));
+        const updated = [updatedContent, MARKDOWN_FORMAT.title, '', tableHeader, tableBody.join(NEW_LINE), ''].join(NEW_LINE);
+
+        if (this.format) {
+            const explorerSync = cosmiconfigSync('prettier');
+            const configResult = explorerSync.search();
+            if (configResult) {
+                const prettierConfig = configResult.config;
+                updatedContent = prettier.format(updatedContent, {
+                    ...prettierConfig,
+                    parser: 'markdown',
+                });
+                console.log(`[ConfigScanner] prettierConfig refers ${configResult.filepath}`);
+            }
+        }
+
+        writeFileSync(filePath, updated);
     }
 
     private async fillEnvironmentMap(fileNames: string[], options: ts.CompilerOptions) {
@@ -377,11 +411,3 @@ export class ConfigScanner {
         }
     }
 }
-
-interface EnvironmentVariable {
-    name: string;
-    defaultValue: unknown;
-    conditions: string[];
-}
-
-type EnvironmentMapValue = Omit<EnvironmentVariable, 'name'> & { groups: string[] };

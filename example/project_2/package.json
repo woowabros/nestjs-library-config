@@ -1,0 +1,19 @@
+{
+  "name": "config-scanner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "scan": "ts-node config-scanner.runner.ts repo/app1/src,repo/app2/src"
+  },
+  "devDependencies": {
+    "@nestjs-library/config": "link:../..",
+    "@types/node": "^20.3.3",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.4"
+  }
+}

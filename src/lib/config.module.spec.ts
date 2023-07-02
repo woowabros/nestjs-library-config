@@ -18,20 +18,39 @@ describe('ConfigModule', () => {
         port: number;
     }
 
+    beforeEach(async () => {
+        const moduleFixture: TestingModule = await Test.createTestingModule({
+            imports: [ConfigModule.forFeature(ConfigService)],
+        }).compile();
+        app = moduleFixture.createNestApplication();
+    });
+
     it('should throw when value is invalid', async () => {
         process.env.PORT = 'invalid';
 
         try {
-            const moduleFixture: TestingModule = await Test.createTestingModule({
-                imports: [ConfigModule.forFeature(ConfigService)],
-            }).compile();
-            app = moduleFixture.createNestApplication();
-
             await app.init();
         } catch (error) {
             expect(error).toBeInstanceOf(ValidationError);
         } finally {
             await app?.close();
         }
+    });
+
+    it('should return default value when value is undefined', async () => {
+        delete process.env.PORT;
+
+        const moduleFixture: TestingModule = await Test.createTestingModule({
+            imports: [ConfigModule.forFeature(ConfigService)],
+        }).compile();
+        app = moduleFixture.createNestApplication();
+
+        await app.init();
+
+        const configService = app.get(ConfigService);
+
+        expect(configService.port).toBe(3000);
+
+        await app.close();
     });
 });
