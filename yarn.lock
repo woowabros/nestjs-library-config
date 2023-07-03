@@ -825,11 +825,11 @@
     tslib "2.5.3"
 
 "@nestjs/testing@^10.0.3":
-  version "10.0.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-10.0.3.tgz#0301b1710e55d3a4924fced9893ac40b0fb7dae2"
-  integrity sha512-Rhm+E7yr499DIOuYbqskdNVo/NJjLKDS7Wp6NWl37woef4u7eVsSKN8VUCXKxNlYUrSw2Nu2AekpLzvl169SXg==
+  version "10.0.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-10.0.4.tgz#0f6715c53d605c5ba35c49717af45a1bd2b387cb"
+  integrity sha512-x4aMwS27XvO3Zvkqv7Ogb9Hj2j5IkW+hthy2uC3BN1CvLoCYz6o2YJGK0CrCtLnugkbfSiJ+F03HE8gePJiEMg==
   dependencies:
-    tslib "2.5.3"
+    tslib "2.6.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
