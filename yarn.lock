@@ -802,9 +802,9 @@
     tslib "2.6.0"
 
 "@nestjs/core@^10.0.3":
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.0.4.tgz#a3c96bee783b35810fd2ee29218795a83d23194f"
-  integrity sha512-shYB81/FgxtnlXRYcadzmduewkgjxGtIoTZBVzf9SM2FmLiltVGQJvZFkOdweTss19yA/503H62duZ6/Syev4w==
+  version "10.0.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.0.5.tgz#d9f0c1ccdab0aafda8d810d11538b727f01557e2"
+  integrity sha512-9A8nixBfE33TWAmmWvNoxdmHrRmHJY0oO3O4Iue0FVkawWJc0YOhSqdNs87McwvKE4InJMI7GVv01NYMEROdPA==
   dependencies:
     uid "2.0.2"
     "@nuxtjs/opencollective" "0.3.2"
