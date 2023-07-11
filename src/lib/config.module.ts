@@ -18,7 +18,7 @@ export class ConfigModule {
         options?: ConfigModuleOptions,
     ): DynamicModule {
         const sourceProvider = options?.sourceProvider ?? new ProcessEnvSourceProvider();
-        const logging = options?.logging ?? true;
+        const logging = options?.logging ?? false;
 
         const providers: Array<FactoryProvider<AbstractConfigService>> = Array.isArray(configClass)
             ? configClass.map((config) => ConfigModule.createConfig(config, sourceProvider, logging))
