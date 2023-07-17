@@ -55,7 +55,7 @@
         "@typescript-eslint/parser": "^5.60.1",
         "commitizen": "^4.3.0",
         "commitlint": "^17.6.6",
-        "eslint": "~8.43.0",
+        "eslint": "~8.45.0",
         "eslint-config-prettier": "8.8.0",
         "eslint-import-resolver-typescript": "^3.5.5",
         "eslint-import-resolver-webpack": "^0.13.2",
