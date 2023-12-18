@@ -5,7 +5,10 @@ import { RedisConfigService } from '../config/redis-config.service';
 
 @Injectable()
 export class OtherService {
-    constructor(public appConfigService: AppConfigService, public redisConfigService: RedisConfigService) {}
+    constructor(
+        public appConfigService: AppConfigService,
+        public redisConfigService: RedisConfigService,
+    ) {}
 
     setLocalEnvironment() {
         this.appConfigService.changeValue('env', NodeEnvironment.LOCAL);
