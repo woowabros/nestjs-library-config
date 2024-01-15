@@ -31,7 +31,7 @@ export abstract class AbstractConfigService<K = Record<string, unknown>> impleme
     showAll() {
         const obj = cloneDeep(this);
         for (const [key, value] of Object.entries(obj)) {
-            Logger.log(`[${this.constructor.name}] ${key}: ${value}`);
+            Logger.log(`[${this.constructor.name}] ${key}: ${typeof value === 'object' ? JSON.stringify(value) : value}`);
         }
     }
 }
