@@ -45,7 +45,7 @@
         "typescript": "~5.3.3"
     },
     "devDependencies": {
-        "@commitlint/config-conventional": "^18.4.3",
+        "@commitlint/config-conventional": "^19.0.3",
         "@nestjs/platform-express": "^10.2.10",
         "@nestjs/testing": "^10.2.10",
         "@types/express": "^4.17.21",
