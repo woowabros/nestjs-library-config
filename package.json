@@ -52,7 +52,7 @@
         "@types/jest": "29.5.12",
         "@types/lodash": "^4.14.202",
         "@types/node": "20.11.20",
-        "@typescript-eslint/eslint-plugin": "^6.14.0",
+        "@typescript-eslint/eslint-plugin": "^7.0.0",
         "@typescript-eslint/parser": "^6.14.0",
         "commitizen": "^4.3.0",
         "commitlint": "^19.0.3",
