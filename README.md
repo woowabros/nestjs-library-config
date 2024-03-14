@@ -192,6 +192,10 @@ export class TestService {
 
 ![Contributors](https://contrib.rocks/image?repo=woowabros/nestjs-library-config)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=woowabros/nestjs-library-config&type=Date)](https://star-history.com/#woowabros/nestjs-library-config&Date)
+
 ## License
 
 This library is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
