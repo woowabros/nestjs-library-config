@@ -42,7 +42,7 @@
         "reflect-metadata": "0.2.1",
         "rxjs": "7.8.1",
         "tslib": "2.6.2",
-        "typescript": "~5.3.3"
+        "typescript": "~5.4.3"
     },
     "devDependencies": {
         "@commitlint/config-conventional": "^19.0.3",
