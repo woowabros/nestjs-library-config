@@ -1,10 +1,13 @@
-import { INestApplication, Injectable } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Injectable } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsNumber, ValidationError } from 'class-validator';
 
 import { AbstractConfigService } from './abstract/abstract-config.service';
 import { ConfigModule } from './config.module';
+
+import type { INestApplication } from '@nestjs/common';
+import type { TestingModule } from '@nestjs/testing';
 
 describe('ConfigModule', () => {
     let app: INestApplication;

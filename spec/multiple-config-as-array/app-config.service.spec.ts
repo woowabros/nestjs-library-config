@@ -1,5 +1,4 @@
-import { INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 
 import { ConfigModule } from '../../src';
 import { AppConfigService } from '../config/app-config.service';
@@ -7,6 +6,9 @@ import { LogLevel } from '../config/log-level.enum';
 import { LoggerConfigService } from '../config/logger-config.service';
 import { PinoConfigService } from '../config/pino-config.service';
 import { RedisConfigService } from '../config/redis-config.service';
+
+import type { INestApplication } from '@nestjs/common';
+import type { TestingModule } from '@nestjs/testing';
 
 describe('Multiple Config as Array', () => {
     let app: INestApplication;

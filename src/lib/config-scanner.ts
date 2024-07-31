@@ -78,7 +78,7 @@ export class ConfigScanner {
         throw new Error(`Unsupported file format (${filename})`);
     }
 
-    async execute() {
+    async execute(): Promise<void> {
         const configFiles = await this.getConfigFiles(this.sourceRoot);
         await this.fillEnvironmentMap(configFiles, {});
 
@@ -100,7 +100,7 @@ export class ConfigScanner {
         return files.flat().filter((filename) => filename.endsWith(ConfigFile.SUFFIX));
     }
 
-    private writeJson() {
+    private writeJson(): string {
         const filePath = path.resolve(this.outputPath, this.filename);
         const content: Record<string, EnvironmentMapValue> = {};
         for (const [key, value] of this.environmentMap.entries()) {
@@ -111,7 +111,7 @@ export class ConfigScanner {
         return filePath;
     }
 
-    private writeReadme() {
+    private writeReadme(): void {
         const filePath = path.resolve(this.outputPath, this.filename);
         let readmeData = existsSync(filePath) ? readFileSync(filePath, 'utf-8') : '';
 
@@ -120,7 +120,7 @@ export class ConfigScanner {
             NEW_LINE +
             ['', ...new Array(MARKDOWN_FORMAT.headers.length).fill(MARKDOWN_FORMAT.rowDash), ''].join(MARKDOWN_FORMAT.columns).trim();
 
-        const tableBody = [];
+        const tableBody: string[] = [];
         for (const [key, value] of new Map([...this.environmentMap].sort()).entries()) {
             tableBody.push(
                 [
@@ -313,11 +313,12 @@ export class ConfigScanner {
                         defaultValue = binExp.right.getText().replace(/^'(.*)'$/, '$1');
                     } else if ((body as unknown as ts.CallExpression).expression.kind === ts.SyntaxKind.PropertyAccessExpression) {
                         // case 3.
-                        const nullishDefaultValue = (
-                            (body as unknown as ts.CallExpression).expression as unknown as ts.PropertyAccessExpression
-                        ).expression
-                            .getText()
-                            .match(/\((.*)(\?\?)(.*)\)/)
+                        const nullishDefaultValue = /\((.*)(\?\?)(.*)\)/
+                            .exec(
+                                (
+                                    (body as unknown as ts.CallExpression).expression as unknown as ts.PropertyAccessExpression
+                                ).expression.getText(),
+                            )
                             ?.pop()
                             ?.trim();
 

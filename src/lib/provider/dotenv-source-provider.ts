@@ -4,11 +4,12 @@ import path from 'path';
 
 import dotenv from 'dotenv';
 
-import { AbstractConfigSourceProvider } from '../abstract/abstract-config-source-provider';
+import type { AbstractConfigSourceProvider } from '../abstract/abstract-config-source-provider';
 
 export class DotenvSourceProvider implements AbstractConfigSourceProvider {
     constructor(private readonly options?: dotenv.DotenvConfigOptions) {}
-    export() {
+
+    export(): dotenv.DotenvParseOutput | undefined {
         if (this.options?.path && typeof this.options.path === 'string' && !this.existsFile(this.options.path)) {
             throw new Error(`Not Found File ${this.options.path}`);
         }
