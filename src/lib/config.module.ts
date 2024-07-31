@@ -1,10 +1,12 @@
-import { DynamicModule, FactoryProvider, Logger, Type } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 
-import { AbstractConfigSourceProvider } from './abstract/abstract-config-source-provider';
-import { AbstractConfigService } from './abstract/abstract-config.service';
 import { ProcessEnvSourceProvider } from './provider/process-env-source-provider';
+
+import type { AbstractConfigSourceProvider } from './abstract/abstract-config-source-provider';
+import type { AbstractConfigService } from './abstract/abstract-config.service';
+import type { DynamicModule, FactoryProvider, Type } from '@nestjs/common';
 
 export interface ConfigModuleOptions {
     sourceProvider?: AbstractConfigSourceProvider;

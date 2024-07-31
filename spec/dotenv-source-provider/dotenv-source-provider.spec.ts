@@ -1,11 +1,13 @@
 import path from 'path';
 
-import { INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 
 import { ConfigService } from './config.service';
 import { ConfigModule } from '../../src';
 import { DotenvSourceProvider } from '../../src/lib/provider/dotenv-source-provider';
+
+import type { INestApplication } from '@nestjs/common';
+import type { TestingModule } from '@nestjs/testing';
 
 describe('DotenvSourceProvider', () => {
     let app: INestApplication;
@@ -46,7 +48,7 @@ describe('DotenvSourceProvider', () => {
         });
 
         it('should be through error, when file is not exist', () => {
-            expect(() => new DotenvSourceProvider({ path: './not-found-file.env' }).export()).toThrowError();
+            expect(() => new DotenvSourceProvider({ path: './not-found-file.env' }).export()).toThrow();
         });
     });
 });

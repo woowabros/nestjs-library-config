@@ -1,7 +1,7 @@
-import { AbstractConfigSourceProvider } from '../abstract/abstract-config-source-provider';
+import type { AbstractConfigSourceProvider } from '../abstract/abstract-config-source-provider';
 
 export class ProcessEnvSourceProvider implements AbstractConfigSourceProvider {
-    export() {
+    export(): NodeJS.ProcessEnv {
         return process.env;
     }
 }

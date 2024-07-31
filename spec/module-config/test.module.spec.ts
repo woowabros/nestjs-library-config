@@ -1,11 +1,14 @@
-import { INestApplication, Logger } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Logger } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
 import { ValidationError } from 'class-validator';
 
 import { OtherService } from './other.service';
 import { TestModule } from './test.module';
 import { TestService } from './test.service';
 import { NodeEnvironment } from '../config/app-config.service';
+
+import type { INestApplication } from '@nestjs/common';
+import type { TestingModule } from '@nestjs/testing';
 
 describe('ConfigModule imported by TestModule', () => {
     let app: INestApplication;

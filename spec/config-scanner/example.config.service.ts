@@ -1,8 +1,9 @@
-import { LogLevel } from '@nestjs/common';
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { AbstractConfigService } from '../../src';
+
+import type { LogLevel } from '@nestjs/common';
 
 const LOG_LEVELS: LogLevel[] = ['log', 'error', 'warn', 'debug', 'verbose'];
 export class ExampleConfigService extends AbstractConfigService<ExampleConfigService> {
@@ -26,7 +27,7 @@ export class ExampleConfigService extends AbstractConfigService<ExampleConfigSer
     disabled: boolean;
 
     @Expose({ name: 'LOGGER_LEVELS' })
-    @Transform(({ value }) => (value && value.split(',')) ?? LOG_LEVELS)
+    @Transform(({ value }) => value?.split(',') ?? LOG_LEVELS)
     @IsString({ each: true })
     @IsOptional()
     @IsEnum(LOG_LEVELS, { each: true })

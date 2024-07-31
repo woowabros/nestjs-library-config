@@ -10,7 +10,7 @@ export class OtherService {
         public redisConfigService: RedisConfigService,
     ) {}
 
-    setLocalEnvironment() {
+    setLocalEnvironment(): void {
         this.appConfigService.changeValue('env', NodeEnvironment.LOCAL);
     }
 }
