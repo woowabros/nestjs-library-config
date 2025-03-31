@@ -188,6 +188,56 @@ export class TestService {
 }
 ```
 
+## Config Scanner
+
+You can use Config Scanner to scan all Config Services and display the required config variables in Markdown or JSON format.
+
+```ts
+// run-config-scanner.ts
+import { ConfigScanner } from '@nestjs-library/config';
+
+async function run() {
+    const configScanner = new ConfigScanner({
+        sourceRoot: './',
+        outputDirectory: './docs',
+        filename: 'env.json',
+    });
+    await configScanner.execute();
+}
+
+run()
+    .then(() => {
+        console.log('\u001B[35m', 'Done');
+        process.exit(0);
+    })
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
+```
+
+The output will be like this:
+
+```json
+{
+    "DATABASE_HOST": {
+        "defaultValue": "localhost",
+        "groups": ["DatabaseConfigService"],
+        "conditions": ["IsString", "IsNotEmpty"]
+    },
+    "DATABASE_PORT": {
+        "defaultValue": 5532,
+        "groups": ["DatabaseConfigService"],
+        "conditions": ["IsPositive"]
+    },
+    "DATABASE_PASSWORD": {
+        "defaultValue": "local",
+        "groups": ["DatabaseConfigService"],
+        "conditions": ["IsString", "IsNotEmpty"]
+    }
+}
+```
+
 ## [Contributors](https://github.com/woowabros/nestjs-library-config/graphs/contributors)
 
 ![Contributors](https://contrib.rocks/image?repo=woowabros/nestjs-library-config)
